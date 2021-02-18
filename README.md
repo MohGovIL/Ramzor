@@ -1,4 +1,4 @@
-# Traffic Light Model
+# :traffic_light: Traffic Light Model
 The Traffic Light Model allows the treatment of local councils differently according to major infection indices and decides on a policy to better cope with the crisis on the local level.
 Please find more about this model on our website: https://corona.health.gov.il/en/ramzor-model.
 
@@ -6,7 +6,7 @@ A vaccination certificate is a part of our strategy for the COVID-19 fight.
 We decided to post our vision of the digital solution for vaccination certificates and appreciate any feedback.
 
 
-# Global Safe Travel Solution
+# :flight_departure: Global Safe Travel Solution
 
 
 ## Background
