@@ -28,7 +28,7 @@ wide range of industry experts. Thus far, our conversations yielded an
 understanding between the State of Israel and the Governments of Greece
 and Cyprus that includes an agreed upon technical solution framework .
 
-The Heath System of Israel
+The Health System of Israel
 
 Health services in Israel are provided in the community through four
 HMOs and through hospitals and private medical centers. The Ministry of
