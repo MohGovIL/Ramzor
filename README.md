@@ -356,8 +356,8 @@ Israeli QR code format:
 
 <!-- -->
 
-1.  Currently, we are using ES256, but any of the standard JWS/JWT
-    algorithms can be used (i.e., PSA256 or RSA256) as long as it's 256
+1.  Currently, we are using RSA256, but any of the standard JWS/JWT
+    algorithms can be used (i.e., PSA256 or ES256) as long as it's 256
     bytes long
 
 <!-- -->
