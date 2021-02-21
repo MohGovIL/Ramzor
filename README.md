@@ -368,12 +368,11 @@ Israeli QR code format:
     digital signature, using the MoH public key.
 
 5.  As a part of control enhancement of the Certificate validity
-    timeframe, IL MoH will also publish a daily updated Certificate
-    Revoke List.
+    timeframe, IL MoH will also publish a daily updated Certificate Revocation List.
 
 <!-- -->
 
-2.  Revoke list will be based on two kinds of batch numbers – a coarse
+2.  Revocation list will be based on two kinds of batch numbers – a coarse
     batch and a fine batch number. In cases where one or more batch
     numbers appears in the published revoke list then the official MoH
     App will recognize these batch related Certificates as invalid.
