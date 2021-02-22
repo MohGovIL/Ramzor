@@ -338,8 +338,7 @@ Israeli QR code format:
 
 2.  The payload starts with the encoded content as following:
 
-    1.  The payload is a single ”vcert.json” file, serialized and
-        archived as standard zip in binary expression.
+    1.  The payload is a single ”vcert.json” file, and serialized as binary expression.
 
     2.  Sample JSON file and field explanation provided below
 
