@@ -330,91 +330,97 @@ infrastructure. In summary, the proposed solution provides a mechanism
 for verifying passenger eligibility **prior to boarding** and thus
 reducing overhead and financial losses to airline operators.
 
-## Technology 
 
-Israeli QR code format:
+## Technical implementation details 
 
-1.  QR code is encoded in 8-bit mode with H level of error correction.
+### Israeli QR code format:
 
-2.  The payload starts with the encoded content as following:
+1.  QR code is encoded in byte encoding mode (type - 0100) with Level H (High) error correction.
 
-    1.  The payload is a single ”vcert.json” file, and serialized as binary expression.
+2. The payload itself is a UTF8 string in the following format:
+``
+     Base64EncodedSignature#JSON
+``
+	1. The first part of the payload is base64 encoded cryptographic signature of the JSON content. The type of the cryptographic signature is determined by the value of the '**et**' field in the JSON content as described below.
+	2. Following the base64 encoded signature is a '**#**' character separator
+	3. Following the separator there is minimum dataset in JSON format (schema and filed explanation is provided below)
 
-    2.  Sample JSON file and field explanation provided below
+#### Rationalization
 
-    3.  JSON data field names were minimized and not semantically
-        comprehensible, because of compliance to minimum character
-        volume requirement as a consequence of a stricted physical QR
-        Code dimensions. 
+According to our test to achieve reliable QR recognition from mobile phone screens as well as in printed form with QR size of \~ 4x4 cm in majority of use-case the raw payload should be kept below **900 bytes**.
 
-    4.  JSON file must include a field that indicates the algorithm used
-        for a cryptographic signature
+To achieve that JSON data field names had to be reduced to bare minimum and are, therefore, not semantically comprehensible. We are providing filed description, JSON schema and mapping to JSON with semantically comprehensible filed names.
 
-3.  Last 256 bytes of the payload is a cryptographic signature in binary
-    expression (key size is fixed at 2048)
+Likewise using existing standard ( RFC 7515 - JSON Web Signature (JWS) ) produced payload larger than our 900 bytes target (due to extra required fields and liberal use of base64 encoding), so the decision was made to keep standard JWS signature algorithms but to implement custom, more space-efficient serialization format.
+
+We have also evaluated additional options for reducing payload size including protobuf, custom ASN1 structure, and compressing JSON with standard ZIP. However, while reducing the final payload size all of the above options introduced additional complexity to solution. 
+
+Ultimately, we've decided to keep the content as simple JSON - to simplify the solution and facilitate adoption.
+																  
+																	 
+						  
+
+### Cryptographic Signature
+									 
+
+The type of the cryptographic signature is determined by the value of the '**et**' field in the JSON content as described below.
+										  
+
+| 'et' field value | signature type | remarks |
+|------------------|--|--|
+| 1 | RSA256-like | <ul><li>JSON is hashed using SHA256. The resulting hash is signed using RSA256 with 2048 bit MoH key.</li><li> In pseudocode: ``signature = Base64Encode(RSA_SignHash(SHA256(SHA256(UTF8_GetBytes(JSON)))))`` </li><li> To validate: hash the UTF8 JSON string once and then feed the resulting hash to RSA validator function. So, ultimately, JSON would be hashed twice.</li><li> Validation in pseudocode: ``RSA_Validate(SHA256(SHA256(UTF8_GetBytes(JSON))),Base64Decode(signature),MoHPublicKey)`` </li><li> There is no practical reason for this implementation - it was a bug that was caught after number of certificates were already produced, so it's kept for backward compatibility. </li> |
+| 2 | RSA256 | <ul><li>JSON is signed using standard RSA256 with 2048 bit MoH key.</li><li> In pseudocode: ``signature = Base64Encode(RSA_SignHash(SHA256(UTF8_GetBytes(JSON))))`` </li><li> To validate: feed the UTF8 JSON string to RSA validator function. </li><li> Validation in pseudocode: ``RSA_Validate(SHA256(UTF8_GetBytes(JSON)),Base64Decode(signature),MoHPublicKey)`` </li>|
+
+ Currently, we are  using RSA256, but other standard algorithms are also possible (i.e., PSA256 or ES256). Specifically, we are considering switching to ES256 as it provides stronger protection for the same key size and smaller signature size.
+																	  
+			  
 
 <!-- -->
+### QR Verification
 
-1.  Currently, we are using RSA256, but any of the standard JWS/JWT
-    algorithms can be used (i.e., PSA256 or ES256) as long as it's 256
-    bytes long
-
-<!-- -->
-
-4.  QR Code verification is based on an optical scanner/reader with
+1.  QR Code verification is based on an optical scanner/reader with
     computing unit (e.g. smartphone, tablet etc.) that should run
     process which insure data integrity of the payload related to its
     digital signature, using the MoH public key.
 
-5.  As a part of control enhancement of the Certificate validity
+2.  As a part of control enhancement of the Certificate validity
     timeframe, IL MoH will also publish a daily updated Certificate Revocation List.
 
 <!-- -->
 
-2.  Revocation list will be based on two kinds of batch numbers – a coarse
+3.  Revocation list will be based on two kinds of batch numbers – a coarse
     batch and a fine batch number. In cases where one or more batch
     numbers appears in the published revoke list then the official MoH
     App will recognize these batch related Certificates as invalid.
 
 <!-- -->
 
-6.  According to our tests, the binary data size obtained (before
-    transforming into QR) is around 900 bytes, allowing reliable scans
-    from mobile phone screens as well as from plain paper printed in the
-    physical QR size of \~ 4x4 cm.
+#### Validation flow:
+															
+1.  Primary Flow - **offline**
+    1.1.  Download IL MoH public key and periodically download revocation
+        lists
+        
+    1.2.  Scan QR code, extract the payload and validate the signature with IL MoH public key
+        according to the process described above,  and check
+        coarse and fine batch numbers against revocation lists. 
 
-Validation flow:
-
-1.  Flow 1 - online
-
+    1.3.  Once the payload is deemed valid, compare the identifying
+        information in the payload (id, passport number, date of birth,
+        first and last name, etc.) with a photo ID or another
+        identifying document.
 <!-- -->
-
-1.  Scan QR code and submit its entire contents as a binary blob to IL
+2.  Secondary Flow - **online**
+     2.1 Scan QR code and submit its entire contents as a binary blob to IL
     MoH validation API. The API will check the validity of the signature
     and revocation lists and will return the JSON payload of the
     certificate along with a valid/invalid indication.
 
-2.  Once the payload is deemed valid, compare the identifying
+    2.2. Once the payload is deemed valid, compare the identifying
     information in the payload (id, passport number, date of birth,
     first and last name, etc.) with a photo ID or another identifying
     document.
 
-<!-- -->
-
-1.  Flow 2 - offline
-
-    1.  Download IL MoH public key and periodically download revocation
-        lists
-
-    2.  Scan QR code, extract the payload according to the process
-        above, and validate the signature with IL MoH public key
-        according to the algorithm specified in the payload and check
-        coarse and fine batch numbers against revocation lists. 
-
-    3.  Once the payload is deemed valid, compare the identifying
-        information in the payload (id, passport number, date of birth,
-        first and last name, etc.) with a photo ID or another
-        identifying document.
 
 ## Unique Vaccination Certificate Identifier (UVCI) Composition
 
