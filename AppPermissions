@@ -1,0 +1,47 @@
++----------------------------------+----------------------------------+
+| Permissions                      | Usage                            |
++==================================+==================================+
+| Internet                         | Internet access is required to   |
+|                                  | download up-to-date              |
+| -have full network access        | c                                |
+|                                  | onfiguration/language/guidelines |
+|                                  | data.                            |
++----------------------------------+----------------------------------+
+| -view network connection         | This permission is required to   |
+|                                  | check the internet connection    |
+|                                  | status and show appropriate      |
+|                                  | notification about it.           |
++----------------------------------+----------------------------------+
+| Location                         | Application is using location    |
+|                                  | services to show you guidelines  |
+| -access location in the          | that are relevant to your        |
+| background                       | location.                        |
+|                                  |                                  |
+| -access precise location only in |                                  |
+| the foreground                   |                                  |
+|                                  |                                  |
+| -access approximate location     |                                  |
++----------------------------------+----------------------------------+
+| Camera                           | Access to an ability to scan and |
+|                                  | save the QR                      |
+| Storage                          |                                  |
+|                                  |                                  |
+| -modify                          |                                  |
+|                                  |                                  |
+| -read                            |                                  |
++----------------------------------+----------------------------------+
+| -run at startup                  | Used for starting the            |
+|                                  | application services after       |
+|                                  | device reset + Optimization for  |
+|                                  | location services (background    |
+|                                  | work issues)                     |
++----------------------------------+----------------------------------+
+| Prevent phone from               | Optimization for location        |
+| sleeping                         | services (background work        |
+|                                  | issues)                          |
+|                                  |                                  |
++----------------------------------+----------------------------------+
+| -run foreground service          | Optimization for location        |
+|                                  | services (background work        |
+|                                  | issues)                          |
++----------------------------------+----------------------------------+
