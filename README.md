@@ -7,6 +7,158 @@ We decided to post our vision of the digital solution for vaccination certificat
 
 
 # :flight_departure: Global Safe Travel Solution
+**Executive summary:**
+
+The State of Israel firmly believes that safely re-opening borders and
+facilitating safe international travel is essential part of economic
+recovery. And while the need for common standard is clear, we believe
+that a simple and flexible system that will enable rapid bi-lateral
+engagements is a necessary stepping stone on our way to globally
+accepted international standard and multi-lateral system. Such a system
+should allow rapid, low-effort implementation by local authorities, and
+minimal effort for travelers and be flexible enough to accommodate
+rapidly changing regulations and epidemiological conditions - all while
+maintaining the highest safety and security standards. After reviewing
+existing efforts around the world and drawing from our unique experience
+of a country with the highest vaccination rate per capita, the State of
+Israel has put forward a proposal that, in our view, balances the need
+for global standardization with the need to expedite the re-opening of
+international travel in a safe and simple way.
+
+The main components of our proposal are:
+
+-   A minimum dataset definition --
+
+> Includes both demographic data to enable validation of ownership and
+> vaccination data to validate epidemiological status.\
+> In accordance to principles outlined above we believe that global
+> agreements on the definition of various epidemiologic states will take
+> time and will prove to be challenging to maintain in light of rapidly
+> changing situation. Therefore, we believe that a reasonable compromise
+> would be to provide all relevant vaccination data as part of the
+> certificate itself, to allow each country to apply local rules and
+> access factors relevant at the time of validation with transparency.\
+> Minimal dataset provided by the issuing entity will be accepted either
+> embedded in the vaccination certificate or made available online
+> (retrievable via standard HTTP request) - to provide even more
+> flexibility
+
+-   Simple technology -- Public Key Infrastructure QR codes, JSON and
+    PKI\
+    Our standard is aimed to be easily implementable on a wide variety
+    of existing computer platforms and systems with minimal technical
+    skills. We believe that rapid TTM is paramount and use of simple and
+    familiar technologies will provide significant benefit.
+
+-   Proof of authenticity (Verification)\
+    We call for widely-adopted, standard-based PKI validation of
+    vaccination certificates. We support use of national X509
+    certificates, however, we believe that in many countries this might
+    present a problem, so we also support use of any standard
+    certificate based on bi-lateral agreement and the safe exchange of
+    public keys.
+
+-   Simplicity and Clarity for all parties\
+    For travelers - we require travelers to submit their vaccination
+    certificates before boarding and provide online validation service -
+    to prevent cases where entry will be denied upon arrival due to
+    epidemiological status.\
+    For airlines and border control - we will enable airlines to
+    integrate our system in the booking process and since travelers are
+    pre-validated, this information can be transparently integrated into
+    border control systems to greatly reduce potential complexity of
+    border crossing.
+
+>  
+
+To summarize, our system enables rapid establishment of computational
+aspects of bi-lateral travel agreements, while retaining strong standard
+foundation in preparation for a globally accepted international
+standard.
+
+ 
+
+**Israeli Requirements for foreign vaccination certificates**
+
+We believe that due to the rapidly changing nature of the local
+epidemiological status and of our understanding of virus behavior  it is
+impractical to try to set and maintain agreed-upon criteria for entry in
+advance. Therefore our solution is based on real-time evaluation of
+traveler vaccination status, current epidemiological situation and
+public health guidelines. Therefore, our solution requires access to
+travelers vaccination information.
+
+This evaluation will be performed before boarding (and possibly during
+booking) - through online systems and, in some cases, can also be
+performed at border control. Outlined below are our requirements to
+enable such evaluation.
+
+-   Minimal dataset
+
+    -   Vaccination certificate should include all **[mandatory]{.ul}**
+        data elements as defined in Annex1 of the [[eHealth Network
+        Guidelines on proof of vaccination for medical purposes - basic
+        interoperability elements
+        v1.1]{.ul}](https://ec.europa.eu/health/sites/health/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf)
+        document.
+
+    -   Additional optional data elements that might assists in
+        evaluating travelers\' epidemiological status can also be
+        included
+
+    -   Aforementioned data elements should be available both in
+        human-readable as well as machine-readable form
+
+    -   Machine-readable data can be made available in two ways:
+
+        -   encoded on the document itself in QR code according to the
+            Israeli standard as defined below
+
+        -   available via online HTTP GET request in JSON format as
+            defined below and agreed upon in advance
+
+> In case of online request option the URL should be encoded in QR code
+> and must use TLS (i.e. https)
+>
+> Alternatively, in case the certificate contains only vaccination
+> certificate ID (and not the entire required dataset) then a
+> verification URL should provided and be agreed upon in advance.
+
+-   Validation for machine-readable data
+
+    -   In case data is encoded on the certificate in QR code it should
+        be signed according to Israeli standard as defined below using
+        any of the supported algorithms.
+
+    -   Data should be signed using approved X509 certificate as defined
+        below
+
+    -   Approved X509 certificate is either a national CVCA X509
+        certificate or another x509 certificate that was agreed upon in
+        advance and where public keys were provided to us in a secure
+        and verifiable manner
+
+    -   In case data is provided via online request it can either be
+        signed in the same way as locally encoded data or the URL itself
+        should be protected by an approved certificate as defined above
+
+-   Flow
+
+    -   As mentioned, travelers will be required to fill in an online
+        form prior to boarding (and, optionally, during booking). In
+        addition to demographic data travelers will be required to
+        upload digital copy of their vaccination certificate (as PDF or
+        image) or, alternatively, input the certificate Id or URL for
+        the online version of the certificate - as described above.
+
+    -   The system will validate traveler\'s demographic details and
+        eligibility for entry based on current epidemiological situation
+        and return either approval or rejection.
+
+    -   All necessary information will be available to the border
+        control officer, however, the traveler is still required to
+        carry a copy of vaccination certificate and present it upon
+        request (either in digital or hard-copy form)
 
 
 ## Background
