@@ -648,3 +648,7 @@ UVCI Example:
 | d2/ol           | Dose 2 - Localized Vaccinating Organization Name | <span dir="rtl">קופ''ח מכבי</span>               |                                                                                                                            |
 | d2/oc           | Dose 2 - Vaccinating Organization Code           | 103                                              |                                                                                                                            |
 | d2/c            | Dose 2 - Vaccinating Country                     | ISR                                              | ISO 3166 Country                                                                                                           |
+
+## Community Implementations
+
+- **https://github.com/yuvadm/greenpass** - A python implementation and CLI tool that can verify Green Pass / Vaccination Certificate PDF files, QR code images and screenshots, or textual QR code payloads.
